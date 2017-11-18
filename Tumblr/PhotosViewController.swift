@@ -53,6 +53,7 @@ class PhotosViewController: ViewController, UITableViewDataSource, UITableViewDe
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+    
     let post = posts[indexPath.row]
     if let photos = post["photos"] as? [[String: Any]] {
         // photos is NOT nil, we can use it!
@@ -66,15 +67,29 @@ class PhotosViewController: ViewController, UITableViewDataSource, UITableViewDe
     
     return cell
   }
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
 
-    /*
+  }
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return posts.count
+  }
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+    headerView.backgroundColor = UIColor(white: 1, alpha:0.9)
+    let profileView = UIImageView(frame: CGRect(x:10, y:10, width:30))
+  }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-    */
+      let vc = segue.destination as! PhotoDetailsViewController
+      let cell = sender as! PhotoCell
+      let indexPath = tableView.indexPath(for: cell)!
+      vc.image = cell.photoImageView.image
+  } 
+  
 
 }
